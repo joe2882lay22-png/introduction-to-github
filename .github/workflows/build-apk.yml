@@ -2,7 +2,7 @@ name: Build Learn GitHub APK
 
 on:
   push:
-    branches: [main]
+    branches: [add-learn-github-apk]
   workflow_dispatch:
 
 permissions:
