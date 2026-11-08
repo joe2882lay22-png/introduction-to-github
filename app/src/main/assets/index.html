@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="my">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1117">
+  <title>Learn GitHub</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0d1117; --card:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9da7b3; --green:#3fb950; --blue:#2f81f7; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 system-ui,-apple-system,"Noto Sans Myanmar",sans-serif; }
+    header { padding:28px 20px 22px; background:linear-gradient(145deg,#132b21,#0d1117 70%); border-bottom:1px solid var(--line); }
+    main { max-width:760px; margin:auto; padding:20px; }
+    h1 { margin:0 0 6px; font-size:28px; } h2 { font-size:21px; margin-top:0; } p { margin:8px 0; }
+    .muted { color:var(--muted); } .badge { display:inline-block; color:#7ee787; background:#183328; padding:3px 10px; border-radius:99px; font-size:13px; }
+    .progress { height:8px; background:#30363d; border-radius:10px; overflow:hidden; margin:14px 0 4px; }
+    .progress span { display:block; height:100%; width:0; background:var(--green); transition:width .2s; }
+    .lesson, .panel { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; margin:14px 0; }
+    .lesson { display:block; width:100%; color:inherit; text-align:left; cursor:pointer; font:inherit; }
+    .lesson:hover, button:hover { border-color:#58a6ff; }
+    .lesson strong { display:block; font-size:17px; margin-bottom:3px; }
+    .lesson small { color:var(--muted); }
+    button { border:1px solid var(--line); border-radius:9px; background:#21262d; color:var(--text); padding:10px 14px; cursor:pointer; font:inherit; }
+    .primary { background:#238636; border-color:#2ea043; font-weight:600; }
+    .choices { display:grid; gap:9px; margin:14px 0; }
+    .choices button { text-align:left; }
+    code { background:#0d1117; border:1px solid var(--line); border-radius:5px; padding:2px 6px; color:#79c0ff; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    footer { text-align:center; padding:12px 20px 28px; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <main style="padding:0 20px">
+      <span class="badge">အခြေခံသင်ခန်းစာ</span>
+      <h1>🐙 Learn GitHub</h1>
+      <p class="muted">GitHub ကို မြန်မာဘာသာဖြင့် အဆင့်လိုက်လေ့လာပါ။</p>
+      <div class="progress"><span id="bar"></span></div>
+      <small id="progressText" class="muted"></small>
+    </main>
+  </header>
+  <main id="app"></main>
+  <footer>လေ့လာမှုတိုးတက်မှုကို ဒီစက်ပေါ်တွင်သာ သိမ်းဆည်းထားသည်။</footer>
+<script>
+  const lessons = [
+    { title: 'GitHub ဆိုတာဘာလဲ?', text: 'GitHub သည် Git ကိုအသုံးပြုပြီး code များကို သိမ်းဆည်း၊ မျှဝေ၊ ပူးပေါင်းလုပ်ဆောင်နိုင်သော platform ဖြစ်သည်။ Git က version history ကို စီမံပေးပြီး GitHub က အဲဒီအလုပ်ကို online ပေါ်တွင် ပူးပေါင်းလုပ်ဆောင်စေသည်။', tip: 'Repository (repo) ဆိုသည်မှာ project ဖိုင်များနှင့် ပြောင်းလဲမှုမှတ်တမ်းများ သိမ်းထားသည့်နေရာဖြစ်သည်။' },
+    { title: 'Repository နှင့် README', text: 'Repository တစ်ခုတွင် project ဖိုင်များ၊ folder များနှင့် commit history ပါဝင်သည်။ README.md ကို project ရဲ့ ရည်ရွယ်ချက်၊ စတင်အသုံးပြုပုံနှင့် အချက်အလက်များ ရှင်းပြရန် အသုံးပြုသည်။', tip: 'Public repo ကို လူတိုင်းမြင်နိုင်ပြီး Private repo ကို ခွင့်ပြုထားသူများသာ မြင်နိုင်သည်။' },
+    { title: 'Commit လုပ်ခြင်း', text: 'Commit သည် ဖိုင်များပြောင်းလဲမှုကို မှတ်တမ်းတင်ထားသော snapshot ဖြစ်သည်။ Commit တိုင်းတွင် ဘာပြောင်းလဲခဲ့သည်ကို ဖော်ပြသည့် message ရှိသင့်သည်။', tip: 'ဥပမာ: “Add project README” — တိုတိုနှင့် ပြောင်းလဲမှုကို ဖော်ပြသော message ရေးပါ။' },
+    { title: 'Branch နှင့် Pull Request', text: 'Branch သည် မူလ project ကို မထိခိုက်စေဘဲ အပြောင်းအလဲများ လုပ်နိုင်သော သီးခြားလမ်းကြောင်းဖြစ်သည်။ အလုပ်ပြီးလျှင် Pull Request (PR) တင်ပြီး အပြောင်းအလဲကို ဆွေးနွေး၊ စစ်ဆေး၊ merge လုပ်နိုင်သည်။', tip: 'Branch → ပြင်ဆင်မှု → Commit → Pull Request → Review → Merge' },
+    { title: 'Fork နှင့် ပူးပေါင်းလုပ်ဆောင်ခြင်း', text: 'Fork သည် အခြားသူ၏ repository ကို သင့် account ထဲသို့ မိတ္တူကူးယူခြင်းဖြစ်သည်။ မိမိ fork တွင် ပြင်ဆင်ပြီး မူရင်း project သို့ Pull Request ပို့နိုင်သည်။', tip: 'Fork သည် မူရင်း repo ကို တိုက်ရိုက်ပြောင်းလဲခြင်းမဟုတ်ပါ။' }
+  ];
+  const completed = new Set(JSON.parse(localStorage.getItem('completedLessons') || '[]'));
+  const app = document.getElementById('app');
+  function updateProgress() {
+    const n = completed.size;
+    document.getElementById('bar').style.width = `${n / lessons.length * 100}%`;
+    document.getElementById('progressText').textContent = `ပြီးဆုံးသောသင်ခန်းစာ ${n}/${lessons.length}`;
+  }
+  function home() {
+    app.innerHTML = `<section class="panel"><h2>စတင်လေ့လာမယ်</h2><p class="muted">GitHub အခြေခံကို သင်ခန်းစာ ${lessons.length} ခုဖြင့် လေ့လာပါ။ အစီအစဉ်ကို နှိပ်ပြီး ဖတ်ရှုနိုင်ပါတယ်။</p></section>` +
+      lessons.map((l,i) => `<button class="lesson" onclick="openLesson(${i})"><strong>${completed.has(i) ? '✅ ' : ''}${i+1}. ${l.title}</strong><small>သင်ခန်းစာကို ဖွင့်ရန်နှိပ်ပါ</small></button>`).join('') +
+      `<section class="panel"><h2>ကိုယ်တိုင်စမ်းကြည့်ပါ</h2><p>အပြောင်းအလဲတွေကို GitHub ပေါ်မှာ အကြံပြုတင်ပြဖို့ ဘာကိုဖန်တီးရမလဲ?</p><div class="choices"><button onclick="answer(this,false)">Commit</button><button onclick="answer(this,true)">Pull Request</button><button onclick="answer(this,false)">Repository</button></div><p id="answer" class="muted" aria-live="polite"></p></section>`;
+    updateProgress();
+  }
+  function openLesson(i) {
+    const l = lessons[i];
+    app.innerHTML = `<button onclick="home()">← သင်ခန်းစာများ</button><section class="panel" style="margin-top:14px"><span class="badge">သင်ခန်းစာ ${i+1}/${lessons.length}</span><h2 style="margin-top:12px">${l.title}</h2><p>${l.text}</p><p class="muted">💡 ${l.tip}</p><div class="row" style="margin-top:18px"><button onclick="openLesson(${Math.max(0,i-1)})" ${i===0?'disabled':''}>ရှေ့သင်ခန်းစာ</button><button class="primary" onclick="markDone(${i})">ပြီးပါပြီ ✓</button>${i<lessons.length-1?`<button onclick="openLesson(${i+1})">နောက်သင်ခန်းစာ →</button>`:''}</div></section>`;
+  }
+  function markDone(i) {
+    completed.add(i); localStorage.setItem('completedLessons', JSON.stringify([...completed]));
+    if (i < lessons.length - 1) openLesson(i+1); else home();
+    updateProgress();
+  }
+  function answer(button, correct) {
+    const out = document.getElementById('answer');
+    out.textContent = correct ? 'မှန်ပါတယ်! Pull Request က ပြောင်းလဲမှုတွေကို အကြံပြုတင်ပြဖို့ အသုံးပြုပါတယ်။' : 'မမှန်သေးပါ။ Pull Request ကို စမ်းကြည့်ပါ။';
+    out.style.color = correct ? '#7ee787' : '#ff7b72';
+  }
+  home();
+</script>
+</body>
+</html>
